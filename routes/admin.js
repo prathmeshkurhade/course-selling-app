@@ -17,7 +17,7 @@ adminRouter.post("/login", function(req,res) {
 })
 
 
-adminRouter.post("/course", function(req,res) {
+adminRouter.post("/", function(req,res) {
     res.json({
         message : "signup endpoint"
     })
