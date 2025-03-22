@@ -1,18 +1,20 @@
 const { Router } = require("express");
 const mongoose = require("mongoose");
-const userModel = require("../db");  // ✅ Import userModel
+const {userModel} = require("../db");  // ✅ Import userModel
+const jwt =require("jsonwebtoken");
+const JWT_USER_PASSWORD = "yomama"
 
 const userRouter = Router();
 
 userRouter.post("/signup", async function (req, res) {
-    const { email, password, firstName, lastName } = req.body;
+    const { email, password, firstname, lastname } = req.body;
     
     try {
         await userModel.create({
             email: email,
             password: password,
-            firstName: firstName,
-            lastName: lastName
+            firstname: firstname,
+            lastname: lastname
         });
 
         res.json({
@@ -23,10 +25,26 @@ userRouter.post("/signup", async function (req, res) {
     }
 });
 
-userRouter.post("/login", function (req, res) {
+userRouter.post("/login", async function (req, res) {
+    const {email, password} = req.body;
+    const user = await userModel.findOne({
+        email  :email,
+        password : password
+    })
+
+    if(user) {
+        const token = jwt.sign({
+            id : user._id
+        }, JWT_USER_PASSWORD);    
+    
     res.json({
-        message: "Login endpoint"
-    });
+    token : token
+    }) }
+    else {
+        res.status(403).json({
+            message: "Incorrect credentials"
+        })
+    }
 });
 
 userRouter.get("/purchases", function (req, res) {
