@@ -1,6 +1,8 @@
 const { Router } = require("express");
 
 const courseRouter = Router();
+const mongoose = require('mongoose');  // ✅ Only import, no connection
+
 
 courseRouter.post("/purchase", function(req,res) {
     res.json({
