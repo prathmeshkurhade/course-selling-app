@@ -14,7 +14,9 @@ app.use("/admin", adminRouter);
 
 async function main() {
     await mongoose.connect("mongodb://localhost:27017")
-    app.listen(3000);
+    app.listen(3000,()=>{
+        console.log(`Server started at ${3000}`);
+    });
     console.log("are u cooked")
 }
 
